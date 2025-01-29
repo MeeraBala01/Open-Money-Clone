@@ -1,0 +1,160 @@
+const _COLORS = {
+  primary: {
+    DEFAULT: '#663399',
+    50: '#f2e7f5',
+    100: '#dfc3f8',
+    200: '#ca9cda',
+    300: '#b576cb',
+    400: '#a55abf',
+    500: '#9643b3',
+    600: '#893eac',
+    700: '#7638a2',
+    800: '#663399',
+    900: '#482a87',
+    accent: '#9747FF',
+    contrast: {
+      DEFAULT: '#FFFFFF',
+      50: '#FFFFFF',
+      100: '#FFFFFF',
+      200: '#FFFFFF',
+      300: '#FFFFFF',
+      400: '#FFFFFF',
+      500: '#FFFFFF',
+      600: '#FFFFFF',
+      700: '#FFFFFF',
+      800: '#FFFFFF',
+      900: '#FFFFFF',
+    },
+  },
+  secondary: {
+    DEFAULT: '#ff1493',
+    50: '#fee3f0',
+    100: '#fcb9db',
+    200: '#fc8ac2',
+    300: '#fe54a8',
+    400: '#ff1493',
+    500: '#ff007a',
+    600: '#ef0076',
+    700: '#d80071',
+    800: '#c3006d',
+    900: '#9a0066',
+    contrast: {
+      DEFAULT: '#FFFFFF',
+      50: '#FFFFFF',
+      100: '#FFFFFF',
+      200: '#FFFFFF',
+      300: '#FFFFFF',
+      400: '#FFFFFF',
+      500: '#FFFFFF',
+      600: '#FFFFFF',
+      700: '#FFFFFF',
+      800: '#FFFFFF',
+      900: '#FFFFFF',
+    },
+  },
+  text: {
+    DEFAULT: '#222222',
+    50: '#fafafa',
+    100: '#f5f5f5',
+    200: '#efefef',
+    300: '#e1e1e1',
+    400: '#bebebe',
+    500: '#9f9f9f',
+    600: '#767676',
+    700: '#626262',
+    800: '#434343',
+    900: '#222222',
+  },
+  success: {
+    DEFAULT: '#00DC62',
+    500: '#01723B',
+  },
+  error: {
+    DEFAULT: '#AF1E1E',
+  },
+  processed: {
+    DEFAULT: '#7e5c00',
+  },
+  pending: {
+    DEFAULT: '#FC8019',
+    100: '#FF3216',
+  },
+  grey: {
+    DEFAULT: '#F5F7FB',
+  },
+  border: {
+    DEFAULT: '#ECECEC',
+    50: '#f9f9f9',
+    100: '#f4f4f4',
+    200: '#ececec',
+    300: '#dddddd',
+    400: '#bababa',
+    500: '#9a9a9a',
+    600: '#727272',
+    700: '#5e5e5e',
+    800: '#3f3f3f',
+    900: '#1e1e1e',
+  },
+  background: {
+    DEFAULT: '#ffffff',
+    50: '#ffffff',
+    100: '#fAfAfA',
+    200: '#f5f5f5',
+    300: '#f0f0f0',
+    400: '#dedede',
+    500: '#c2c2c2',
+    600: '#979797',
+    700: '#818181',
+    800: '#606060',
+    900: '#3c3c3c',
+  },
+}
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}",
+  ],
+  theme : {
+    extend: {
+      colors: {
+        primary: _COLORS.primary,
+        secondary: _COLORS.secondary,
+        error: _COLORS.error,
+        success: _COLORS.success,
+        processed: _COLORS.processed,
+        pending: _COLORS.pending,
+        grey: _COLORS.grey,
+      },
+      fontFamily: {
+        primary: `'Montserrat', sans-serif`,
+        secondary: `'Open Sans', sans-serif`,
+      },
+      backgroundColor: {
+        default: _COLORS.background,
+      },
+      textColor: {
+        default: _COLORS.text,
+      },
+      placeholderColor: {
+        default: _COLORS.text,
+      },
+      borderColor: {
+        default: _COLORS.border,
+      },
+      divideColor: {
+        default: _COLORS.border,
+      },
+      ringColor: {
+        default: _COLORS.border,
+      },
+      ringOffsetColor: {
+        default: _COLORS.border,
+      },
+      outlineColor: {
+        default: _COLORS.border,
+      },
+    },
+  },
+  plugins: [],
+}

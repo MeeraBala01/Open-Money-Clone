@@ -1,0 +1,54 @@
+<div class="p-4 bg-white sticky top-0 border-b border-solid min-h-15 z-10">
+  <header class="flex justify-between items-center">
+    <h1 class="text-primary-600 font-semibold text-lg">{{ label() }}</h1>
+    <section class="flex flex-row gap-3">
+      <button
+        class="flex items-center border border-pink-500 rounded-full h-8 p-2"
+      >
+        <img src="icons/upgrade.png" class="bg-pink-500 rounded-full p-1 w-5" />
+        <p class="text-sm p-1">Upgrade</p>
+      </button>
+
+      <button
+        type="button"
+        [matMenuTriggerFor]="menu"
+        id="dropdown"
+        class="flex items-center border border-primary-600 rounded-full h-8 p-2 relative"
+      >
+        <img src="icons/plus.png" class="bg-primary-600 rounded-full p-1 w-5" />
+        <p class="text-sm p-1 flex items-center gap-2">
+          Pay a vendor <img src="icons/drop.png" class="w-3 h-3" />
+        </p>
+      </button>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Create Bill & Pay</button>
+        <button mat-menu-item>Create Invoice</button>
+        <button mat-menu-item>Create Payment Link</button>
+      </mat-menu>
+
+      <button>
+        <img src="icons/contact.png" class="p-1 w-7" />
+      </button>
+
+      <button [matMenuTriggerFor]="settings">
+        <img src="icons/setting.png" class="p-1 w-7" />
+      </button>
+      <mat-menu #settings="matMenu">
+        <button mat-menu-item routerLink="/team">
+          <div class="flex justify-start gap-2 items-center">
+            <img src="icons/team.png" class="w-5 h-5" />
+            <span>Team</span>
+          </div>
+        </button>
+
+        <button mat-menu-item routerLink="/logout" (click)="clear()">
+          <div class="flex justify-start gap-2 items-center">
+            <img src="icons/logout.png" class="w-5 h-5" />
+            <span> Log Out</span>
+          </div>
+        </button>
+      </mat-menu>
+    </section>
+  </header>
+</div>

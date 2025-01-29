@@ -1,0 +1,170 @@
+<div><app-signup-alert></app-signup-alert></div>
+<div class="grid h-screen grid-cols-2">
+  <div class="space-y-2">
+    <div class="flex flex-row justify-between p-6">
+      <header class="font-bold text-primary-600 text-3xl">OPEN</header>
+      <div class="text-sm">
+        Already a member?
+        <button
+          class="font-semibold text-xl text-primary-600"
+          routerLink="/login"
+        >
+          Sign In
+        </button>
+      </div>
+    </div>
+    <div class="flex justify-center">
+      <div class="justify-items-center space-y-3">
+        <h1 class="font-semibold text-4xl space-y-3">Sign Up</h1>
+        <p class="text-sm">Bring your banking & business together</p>
+      </div>
+    </div>
+    <div class="justify-items-center">
+      <div
+        class="flex items-center border border-solid w-1/2 p-2 rounded-md hover:bg-blue-100"
+      >
+        <img src="icons/google.png" class="w-5 h-5" />
+        <button class="font-light text-left text-sm rounded-sm ml-24">
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+    <div class="inline-flex items-center justify-center w-full">
+      <hr class="w-2/3 h-px mt-3 bg-gray-200 border-0" />
+      <span class="absolute px-5 pt-2 mt-2 font-medium text-gray-900 bg-white"
+        >OR</span
+      >
+    </div>
+
+    <form class="flex flex-col items-center space-y-2" [formGroup]="userForm">
+      <mat-form-field appearance="outline" class="w-2/3 h-auto">
+        <mat-label>Your full name</mat-label>
+        <input
+          matInput
+          type="text"
+          id="name"
+          name="name"
+          formControlName="name"
+          [(ngModel)]="userRegisterObj.name"
+          placeholder="Your full name"
+          class="border w-full"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter your Full name</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-2/3 h-auto">
+        <mat-label>Your work Mail-Id</mat-label>
+        <input
+          matInput
+          [(ngModel)]="userRegisterObj.email"
+          type="email"
+          id="email"
+          name="email"
+          formControlName="email"
+          placeholder="Your work Mail-Id"
+          class="border w-full p-1"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter your Email-Id</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-2/3 h-auto">
+        <mat-label>Your mobile number</mat-label>
+        <input
+          matInput
+          type="text"
+          id="mobile"
+          name="mobile"
+          formControlName="mobile"
+          [(ngModel)]="userRegisterObj.mobile"
+          placeholder="Your mobile numbers"
+          class="border w-full p-1"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter your Mobile number</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-2/3">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="text"
+          id="password"
+          name="password"
+          formControlName="password"
+          [(ngModel)]="userRegisterObj.password"
+          placeholder="Password "
+          class="border w-full rounded-lg p-1"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter Password</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-2/3">
+        <mat-label>Referral Code</mat-label>
+        <input
+          matInput
+          type="text"
+          id="referral"
+          name="referral"
+          placeholder="Referral Code (Optional)"
+          formControlName="referral"
+          placeholder="Referral Code (Optional) "
+          class="border w-full rounded-lg p-1"
+        />
+      </mat-form-field>
+      <div class="space-y-4">
+        <div>
+          <input type="checkbox" class="accent-primary-600 cursor-pointer" />
+          <label class="text-sm ml-3">Send me WhatsApp alerts about Open</label>
+        </div>
+        <div>
+          <input type="checkbox" class="accent-primary-600 cursor-pointer" />
+          <label class="text-sm ml-3">
+            I agree to Open’s
+            <a
+              class="text-primary-600"
+              href="https://open.money/tnc?_gl=1*1tz5bdj*_gcl_au*MTMwODIzNDE1MC4xNzMyMTcyNjkz*_ga*MTQ2MDkwMDQ2Ny4xNzMyMTcyNjk0*_ga_L3XLJJWHB5*MTczNjE1NjE5Ni43LjEuMTczNjE1NzE5OS4zOC4wLjA.*_ga_X1NB2RH6V5*MTczNjE1NjE5Ni43LjEuMTczNjE1NzE5OS4zOC4wLjA"
+              target="_blank"
+            >
+              Terms of Service</a
+            >
+            &
+            <a
+              class="text-primary-600"
+              href="https://open.money/privacy?_gl=1*1ppbt3r*_gcl_au*MTMwODIzNDE1MC4xNzMyMTcyNjkz*_ga*MTQ2MDkwMDQ2Ny4xNzMyMTcyNjk0*_ga_L3XLJJWHB5*MTczNjE1NjE5Ni43LjEuMTczNjE1ODc5Ny4xMy4wLjA.*_ga_X1NB2RH6V5*MTczNjE1NjE5Ni43LjEuMTczNjE1ODc5Ny4xMy4wLjA.#introduction"
+              target="_blank"
+              >Privacy Policy</a
+            ></label
+          >
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="bg-primary-600 text-white w-2/3 p-3 rounded-lg font-semibold text-lg hover:bg-violet-950 mt-3"
+        (click)="onRegister()"
+      >
+        Sign Up
+      </button>
+    </form>
+  </div>
+  <section class="bg-gray-100">
+    <div>
+      <svg></svg>
+    </div>
+    <div class="space-y-4 flex flex-col items-center">
+      <div class="justify-items-center">
+        <p>Bank on Open for all business & automated</p>
+        <p>financing needs.</p>
+      </div>
+      <div class="font-extrabold text-2xl">#TogetherIsBetter</div>
+    </div>
+    <app-bug-button></app-bug-button>
+  </section>
+</div>

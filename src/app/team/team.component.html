@@ -1,0 +1,320 @@
+<div
+  [class]="
+    overlayTeam || overlayVisible || editOverlay
+      ? 'bg-black opacity-40 pointer-events-none'
+      : ''
+  "
+>
+  <app-head-bar label="Team"></app-head-bar>
+  <header class="bg-white p-3 flex flex-row justify-between border-b">
+    <div class="flex flex-row gap-3">
+      <div
+        class="rounded-full border flex flex-row gap-3 items-center px-3 py-1"
+      >
+        <button>
+          <img src="icons/search.png" class="w-4 h-4" />
+        </button>
+        <input
+          type="search"
+          placeholder="Search Team"
+          class="placeholder:text-sm focus:outline-none"
+          (input)="applyFilter($event)"
+        />
+      </div>
+      <div
+        class="border rounded-full flex flex-row items-center justify-between gap-16 px-2 w-52"
+        [matMenuTriggerFor]="team"
+      >
+        <button type="button" id="dropdown" [matMenuTriggerFor]="team">
+          {{ selectedRole }}
+        </button>
+        <mat-menu #team="matMenu" class="w-48 h-44">
+          <button
+            mat-menu-item
+            *ngFor="let post of position"
+            (click)="applyRoleFilter(post)"
+          >
+            {{ post }}
+          </button>
+        </mat-menu>
+
+        <img src="icons/drop.png" class="w-3 h-3" />
+      </div>
+    </div>
+
+    <button
+      class="bg-primary-600 text-white text-sm p-2 rounded-lg flex items-center gap-2 hover:bg-violet-950 px-4"
+      (click)="openFormDialog()"
+    >
+      <img src="icons/plus.png " class="w-4 h-4" />
+      Add Team
+    </button>
+  </header>
+
+  <div class="h-screen bg-white">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="firstName">
+        <th mat-header-cell *matHeaderCellDef>Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef>Department</th>
+        <td mat-cell *matCellDef="let element">{{ element.department }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <td mat-cell *matCellDef="let element">{{ element.role }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button [matMenuTriggerFor]="menu">
+            <img src="icons/menu.png" class="w-5" />
+          </button>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="viewDetails(element)">
+              View Details
+            </button>
+            <button mat-menu-item (click)="editOpen(element)">Edit Info</button>
+          </mat-menu>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSize]="5" aria-label="Select page"></mat-paginator>
+  </div>
+</div>
+
+<!-- input form -->
+<div
+  *ngIf="overlayTeam"
+  class="fixed top-0 right-0 h-full shadow-lg transition-transform duration-300 ease-in-out z-40 bg-white"
+>
+  <div class="p-4 border-b flex flex-row items-center justify-between m-auto">
+    <p class="text-lg font-semibold">Add a member</p>
+    <button class="font-semibold text-xl" (click)="closeFormDialog()">X</button>
+  </div>
+  <form class="p-3 flex flex-col space-y-3" [formGroup]="teamForm">
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>First name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="First name"
+          class="border w-full"
+          id="firstName "
+          name="firstName"
+          formControlName="firstName"
+          [(ngModel)]="teamMember.firstName"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter First name</mat-error
+        >
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>Last name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Last name"
+          class="border w-full"
+          id="lastName "
+          name="lastName"
+          formControlName="lastName"
+          [(ngModel)]="teamMember.lastName"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter Last name</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="Email"
+          class="border w-full"
+          id="email "
+          name="email"
+          formControlName="email"
+          [(ngModel)]="teamMember.email"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Enter Email-Id</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Select Department</mat-label>
+        <mat-select
+          name="department"
+          formControlName="department"
+          [(ngModel)]="teamMember.department"
+        >
+          @for (department of departments; track department) {
+          <mat-option [value]="department.value">{{
+            department.viewValue
+          }}</mat-option>
+          }
+        </mat-select>
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Select Department</mat-error
+        >
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Role</mat-label>
+      <mat-select
+        name="role"
+        formControlName="role"
+        [(ngModel)]="teamMember.role"
+      >
+        @for (role of roles; track role) {
+        <mat-option [value]="role.value">{{ role.viewValue }}</mat-option>
+        }
+      </mat-select>
+      <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+        Select Role</mat-error
+      >
+    </mat-form-field>
+
+    <button
+      class="text-white p-3 font-semibold bg-primary-600 rounded-lg flex justify-center mt-80"
+      (click)="saveTeam(teamMember)"
+    >
+      Confirm
+    </button>
+  </form>
+</div>
+
+<!-- view details -->
+
+<div
+  *ngIf="overlayVisible"
+  class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg transition-transform duration-300 ease-in-out z-70 font-semibold"
+>
+  <div class="p-4 space-y-10">
+    <div class="flex flex-row justify-between">
+      <h2 class="text-lg font-bold">Employee Details</h2>
+      <button class="font-semibold text-xl" (click)="closeOverlay()">X</button>
+    </div>
+
+    <p class="font-semibold text-lg flex gap-7">
+      <img
+        src="icons/person.png"
+        class="w-10 h-10 p-2 rounded-full bg-primary-100"
+      />
+      {{ selectedMember?.firstName }} {{ selectedMember?.lastName }}
+    </p>
+    <div>
+      <table class="table-auto w-full">
+        <tbody>
+          <tr>
+            <td class="p-2">Email</td>
+            <td class="">: {{ selectedMember?.email }}</td>
+          </tr>
+          <tr>
+            <td class="p-2">Department</td>
+            <td class="">: {{ selectedMember?.department }}</td>
+          </tr>
+          <tr>
+            <td class="p-2">Role</td>
+            <td class="">: {{ selectedMember?.role }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- updating form -->
+<div
+  *ngIf="editOverlay"
+  class="fixed top-0 right-0 h-full shadow-lg transition-transform duration-300 ease-in-out z-40 bg-white"
+>
+  <div class="p-4 border-b flex flex-row items-center justify-between m-auto">
+    <p class="text-lg font-semibold">Edit Information</p>
+    <button class="font-semibold text-xl" (click)="editClose()">X</button>
+  </div>
+  <form class="p-3 flex flex-col" [formGroup]="teamForm">
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>First name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="First name"
+          class="border w-full"
+          id="firstName "
+          name="firstName"
+          formControlName="firstName"
+        />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>Last name</mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Last name"
+          class="border w-full"
+          id="lastName "
+          name="lastName"
+          formControlName="lastName"
+        />
+      </mat-form-field>
+    </div>
+    <div class="grid grid-cols-2 gap-3">
+      <mat-form-field appearance="outline" class="h-auto">
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="Email"
+          class="border w-full"
+          id="email "
+          name="email"
+          formControlName="email"
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Select Department</mat-label>
+        <mat-select name="department" formControlName="department">
+          @for (department of departments; track department) {
+          <mat-option [value]="department.value">{{
+            department.viewValue
+          }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <mat-form-field appearance="outline">
+      <mat-label>Select Role</mat-label>
+      <mat-select name="role" formControlName="role">
+        @for (role of roles; track role) {
+        <mat-option [value]="role.value">{{ role.viewValue }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      class="text-white p-3 font-semibold bg-primary-600 rounded-lg flex justify-center mt-80"
+      (click)="updateForm()"
+    >
+      Update
+    </button>
+  </form>
+</div>

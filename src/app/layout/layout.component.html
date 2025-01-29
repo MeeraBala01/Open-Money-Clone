@@ -1,0 +1,8 @@
+<div class="flex h-screen">
+  <app-bug-button></app-bug-button>
+  <app-side-bar></app-side-bar>
+  <!-- Main Content -->
+  <div class="flex-1 ml-[calc(var(--sidebar-width))] overflow-auto bg-slate-50">
+    <router-outlet></router-outlet>
+  </div>
+</div>

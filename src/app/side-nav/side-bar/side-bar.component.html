@@ -1,0 +1,95 @@
+<div
+  class="bg-white text-black transition-all duration-100ms grid drop-shadow-xl h-screen sticky top-0 z-20"
+  [ngClass]="{ 'w-60': isExpanded, 'w-20': !isExpanded }"
+>
+  <div class="flex items-center">
+    <span *ngIf="isExpanded" class="text-2xl font-bold text-primary-600 ml-6">
+      OPEN
+    </span>
+    <img *ngIf="!isExpanded" src="icons/open.png" class="w-12 h-12 ml-3" />
+  </div>
+
+  <ul class="ml-3 space-y-1 mb-7">
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/dashboard" class="flex items-center justify-start gap-3">
+        <img src="icons/dashboard.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Dashboard</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/cashflow" class="flex items-center justify-start gap-3">
+        <img src="icons/cashflow.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Cashflow Analysis</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a
+        routerLink="/receivables"
+        class="flex items-center justify-start gap-3"
+      >
+        <img src="icons/receive.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Receivables</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/payable" class="flex items-center justify-start gap-3">
+        <img src="icons/payable.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Payable</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/reports" class="flex items-center justify-start gap-3">
+        <img src="icons/report.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Reports</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/banking" class="flex items-center justify-start gap-3">
+        <img src="icons/banking.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Banking</span>
+      </a>
+    </div>
+    <div
+      class="pl-4 p-2 mr-4 py-3 rounded-md focus-within:border focus-within:border-gray-50 focus-within:text-primary-600 focus-within:bg-gray-100"
+    >
+      <a routerLink="/credit" class="flex items-center justify-start gap-3">
+        <img src="icons/credit.png" class="w-4" />
+        <span *ngIf="isExpanded" class="text-sm">Credit</span>
+      </a>
+    </div>
+  </ul>
+  <div class="pl-4">
+    <a
+      routerLink="/apps"
+      class="flex items-center justify-start gap-3 p-3 rounded-lg border border-gray-300 mr-5"
+    >
+      <img src="icons/app.png" class="w-4 h-4" />
+      <span *ngIf="isExpanded" class="text-sm">Apps</span>
+    </a>
+
+    <div class="mt-5 grid grid-cols-2">
+      <button (click)="toggleSidebar()" class="ml-2">
+        <img [@rotatedState]="state" src="icons/tleft.png" class="w-6 h-6" />
+      </button>
+
+      <span
+        *ngIf="isExpanded"
+        class="bg-gray-300 px-3 py-2 rounded-lg font-semibold text-xs mr-12 text-primary-600"
+      >
+        Help?
+      </span>
+    </div>
+  </div>
+</div>

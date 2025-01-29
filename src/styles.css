@@ -1,1 +1,46 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: Montserrat;
+}
+  
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field.mat-mdc-form-field
+  .mdc-notched-outline__notch {
+  border-right-style: hidden;
+}
+
+.mat-mdc-table.mdc-data-table__table.cdk-table{
+  font-family: 'Montserrat';
+
+}
+
+.custom-form-field .mat-form-field-subscript-wrapper {
+  display: flex !important;
+  justify-content: flex-end;
+}
+
+.custom-error {
+  text-align: right;
+  width: 100%;
+}
+
+
+/* .mat-mdc-text-field-wrapper {
+  background-color: aquamarine;
+} */
+
+body {
+  .mat-mdc-form-field {
+
+    --mdc-outlined-text-field-outline-color : lightgray
+     ;
+  }
+}

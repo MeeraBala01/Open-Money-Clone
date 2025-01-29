@@ -1,0 +1,114 @@
+<div>
+  <app-login-alert></app-login-alert>
+</div>
+
+<div class="grid h-screen grid-cols-2">
+  <div>
+    <div class="flex flex-row justify-between p-6">
+      <header class="font-bold text-primary-600 text-3xl">OPEN</header>
+      <div class="text-sm">
+        New to Open?
+        <button
+          class="font-semibold text-xl text-primary-600"
+          routerLink="/sign-up"
+        >
+          Sign Up
+        </button>
+      </div>
+    </div>
+    <div class="flex justify-center">
+      <div class="justify-items-center">
+        <h1 class="font-semibold text-4xl mt-20">Sign in</h1>
+        <p class="text-sm">Login to run your business together</p>
+      </div>
+    </div>
+    <div class="flex justify-center mt-3">
+      <div
+        class="flex items-center border border-solid w-1/2 p-2 rounded-md hover:bg-blue-100"
+      >
+        <img src="icons/google.png" class="w-5 h-5" />
+        <button class="font-light text-left text-sm rounded-sm ml-24">
+          Sign in with Google
+        </button>
+      </div>
+    </div>
+    <div class="inline-flex items-center justify-center w-full">
+      <hr class="w-2/3 h-px my-8 bg-gray-200 border-0" />
+      <span class="absolute p-3 font-medium text-gray-900 bg-white">OR</span>
+    </div>
+
+    <form class="flex flex-col items-center space-y-3" [formGroup]="loginForm">
+      <mat-form-field appearance="outline" class="w-2/3 h-auto">
+        <mat-label>Your registered Email-Id</mat-label>
+        <input
+          matInput
+          placeholder="Your registered Email-Id"
+          class="border w-full"
+          id="username"
+          name="username"
+          formControlName="username"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Your registered Email-Id Required</mat-error
+        >
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-2/3">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Password "
+          id="password"
+          name="password"
+          formControlName="password"
+          class="border w-full"
+        />
+        <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
+          Your Password Required</mat-error
+        >
+      </mat-form-field>
+
+      <button class="ml-80 text-primary-600">Forgot password?</button>
+      <button
+        mat-flat-button
+        class="bg-primary-600 text-white text-lg p-3 rounded-lg w-2/3 h-14 hover:bg-violet-900"
+        (click)="onLogin()"
+      >
+        Continue
+      </button>
+
+      <p class="text-sm text-gray-500">
+        Protected by reCAPTCHA. Google
+        <a
+          class="text-primary-600 hover:cursor-pointer"
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          >Privacy Policy</a
+        >
+        &
+        <a
+          class="text-primary-600 hover:cursor-pointer"
+          href="https://policies.google.com/terms"
+          target="_blank"
+          >Terms of Service</a
+        >
+        apply.
+      </p>
+    </form>
+  </div>
+
+  <section class="bg-gray-100 items-center">
+    <div>
+      <svg></svg>
+    </div>
+    <div class="space-y-4 flex flex-col items-center">
+      <div class="justify-items-center">
+        <p>Bank on Open for all business & automated</p>
+        <p>financing needs.</p>
+      </div>
+      <div class="font-extrabold text-2xl">#TogetherIsBetter</div>
+    </div>
+    <app-bug-button></app-bug-button>
+  </section>
+</div>
