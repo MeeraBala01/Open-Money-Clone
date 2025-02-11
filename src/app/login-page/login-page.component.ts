@@ -67,20 +67,10 @@ export class LoginPageComponent {
   currentUser: any;
   onLogin() {
     if (this.loginForm.valid) {
-      this._login.login(this.loginForm.value).subscribe({
-        next: (response) => {
-          console.log('Login successful:', response);
-          this.toggleContent();
-        },
-        error: (error) => {
-          console.error('Login failed:', error);
-          this.errorMessage = 'Invalid username or password. Please try again.'; // ✅ Display error message
-        },
-      });
-      // this._login.login(this.loginForm.value).subscribe((response) => {});
-      // this.toggleContent();
+      this._login.login(this.loginForm.value).subscribe((response) => {});
+      this.toggleContent();
     } else {
-      this.errorMessage = 'Please enter a valid username and password.';
+      this.errorMessage;
     }
   }
 
@@ -113,15 +103,26 @@ export class LoginPageComponent {
   submitOtp() {
     console.log('clicked');
     const enteredOtp = this.otpArray.join('');
-    if (!/^\d{6}$/.test(enteredOtp)) {
-      return;
-    }
+
     this._login.verifyOtp(enteredOtp).subscribe((response) => {
-      if (response.success) {
-        this.router.navigate(['/dashboard']); // Redirect after OTP success
+      if (response.data.users_id) {
+        this.router.navigate(['/dashboard']);
       }
     });
   }
+  // this._login
+  //   .verifyOtp(
+  //     {
+  //       username: this.loginForm.value.username,
+  //       password: this.loginForm.value.password,
+  //     },
+  //     enteredOtp
+  //   )
+  //   .subscribe((response) => {
+  //     if (response.success) {
+  //       this.router.navigate(['']); // ✅ Redirect on successful OTP verification
+  //     }
+  //   });
 }
 
 //     if (currentUser) {

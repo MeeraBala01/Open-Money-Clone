@@ -24,6 +24,8 @@ export class LoginService {
 
   verifyOtp(otp: string): Observable<any> {
     return this.http.post(`${this._urlConfig.baseUrl}/users/login`, {
+      login: '9218381273',
+      password: 'Test@123',
       two_fa_otp: otp,
       lead: { next: '/dashboard' },
     });
