@@ -15,21 +15,17 @@ import { TeamComponent } from './team/team.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    component: LoginPageComponent,
-    canActivate: [accountGuard],
-  },
-  {
     path: 'sign-up',
     component: SignupPageComponent,
     canActivate: [accountGuard],
   },
   {
     path: 'login',
+    pathMatch: 'full',
     component: LoginPageComponent,
     canActivate: [accountGuard],
   },
+
   {
     path: '',
     component: LayoutComponent,

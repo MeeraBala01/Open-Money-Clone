@@ -1,4 +1,11 @@
-import { Component, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  ViewChild,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+} from '@angular/core';
 import { BugButtonComponent } from '../bug-button/bug-button.component';
 import { RouterLink, Router } from '@angular/router';
 import {
@@ -6,12 +13,16 @@ import {
   ReactiveFormsModule,
   Validators,
   FormGroup,
+  FormBuilder,
+  FormsModule,
+  FormArray,
 } from '@angular/forms';
 import { UserService } from '../user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginAlertComponent } from '../alerts/login-alert/login-alert.component';
 import { LoginService } from '../services/login.service';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-page',
@@ -22,61 +33,120 @@ import { LoginService } from '../services/login.service';
     MatFormFieldModule,
     MatInputModule,
     LoginAlertComponent,
+    NgIf,
+    NgFor,
+    FormsModule,
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginPageComponent {
-  loginForm: FormGroup = new FormGroup({
-    username: new FormControl('', [Validators.required]),
-    password: new FormControl('', [Validators.required]),
-  });
+  loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(
+    private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
     private _login: LoginService
-  ) {}
+  ) {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+    });
 
+    console.log(this.otp[0]);
+  }
+  isOriginal: boolean = true;
+
+  toggleContent() {
+    this.isOriginal = !this.isOriginal;
+    this.errorMessage = '';
+  }
+  currentUser: any;
   onLogin() {
     if (this.loginForm.valid) {
-      const isLocalData = localStorage.getItem('openStorage');
-      if (isLocalData != null) {
-        const users = JSON.parse(isLocalData);
-
-        const currentUser = users.find(
-          (m: any) =>
-            m.username === this.loginForm.value.email &&
-            m.password === this.loginForm.value.password
-        );
-
-        if (currentUser) {
-          this.userService.setCurrentUser(currentUser);
-
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.triggerAlert();
-        }
-      } else {
-        this.triggerAlert1();
-      }
+      this._login.login(this.loginForm.value).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          this.toggleContent();
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+          this.errorMessage = 'Invalid username or password. Please try again.'; // ✅ Display error message
+        },
+      });
+      // this._login.login(this.loginForm.value).subscribe((response) => {});
+      // this.toggleContent();
     } else {
-      this.triggerAlert2();
+      this.errorMessage = 'Please enter a valid username and password.';
     }
   }
 
-  @ViewChild(LoginAlertComponent) customAlert!: LoginAlertComponent;
+  otp: string[] = new Array(6).fill('');
+  otpArray = Array(6).fill('');
 
-  triggerAlert() {
-    this.customAlert.showAlert('Incorrect Username or Password');
+  moveFocus(event: any, index: number) {
+    const input = event.target;
+    const value = input.value;
+    if (value && index < 5) {
+      input.nextElementSibling?.focus();
+    }
   }
 
-  triggerAlert1() {
-    this.customAlert.showAlert('User non-existing, Sign-Up');
+  handleBackspace(event: KeyboardEvent, index: number) {
+    const input = event.target as HTMLInputElement;
+
+    if (event.key === 'Backspace' && index > 0 && !input.value) {
+      const prevInput = input.previousElementSibling as HTMLInputElement | null;
+      prevInput?.focus();
+    }
   }
 
-  triggerAlert2() {
-    this.customAlert.showAlert('Please enter valid credentials');
+  allowOnlyNumbers(event: KeyboardEvent) {
+    if (!/^\d$/.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  submitOtp() {
+    console.log('clicked');
+    const enteredOtp = this.otpArray.join('');
+    if (!/^\d{6}$/.test(enteredOtp)) {
+      return;
+    }
+    this._login.verifyOtp(enteredOtp).subscribe((response) => {
+      if (response.success) {
+        this.router.navigate(['/dashboard']); // Redirect after OTP success
+      }
+    });
   }
 }
+
+//     if (currentUser) {
+//       this.userService.setCurrentUser(currentUser);
+//       this.router.navigate(['/dashboard']);
+//     } else {
+//       this.triggerAlert();
+//     }
+//   } else {
+//     this.triggerAlert1();
+//   }
+// } else {
+//   this.triggerAlert2();
+// }
+
+// @ViewChild(LoginAlertComponent) customAlert!: LoginAlertComponent;
+
+// triggerAlert() {
+//   this.customAlert.showAlert('Incorrect Username or Password');
+// }
+
+// triggerAlert1() {
+//   this.customAlert.showAlert('User non-existing, Sign-Up');
+// }
+
+// triggerAlert2() {
+//   this.customAlert.showAlert('Please enter valid credentials');
+// }
