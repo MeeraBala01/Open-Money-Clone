@@ -1,8 +1,8 @@
 <div
-  class="bg-white text-black transition-all duration-100ms grid drop-shadow-xl h-screen sticky top-0 z-20"
+  class="bg-white text-black transition-all duration-100ms ease-in-out grid drop-shadow-xl h-screen sticky top-0 z-20"
   [ngClass]="{ 'w-60': isExpanded, 'w-20': !isExpanded }"
 >
-  <div class="flex items-center">
+  <div class="flex items-center transition-all duration-300 ease-in-out">
     <span *ngIf="isExpanded" class="text-2xl font-bold text-primary-600 ml-6">
       OPEN
     </span>
@@ -23,7 +23,7 @@
     >
       <a routerLink="/cashflow" class="flex items-center justify-start gap-3">
         <img src="icons/cashflow.png" class="w-4" />
-        <span *ngIf="isExpanded" class="text-sm">Cashflow Analysis</span>
+        <span *ngIf="isExpanded" class="text-sm">Cashflow </span>
       </a>
     </div>
     <div
@@ -73,7 +73,7 @@
   <div class="pl-4">
     <a
       routerLink="/apps"
-      class="flex items-center justify-start gap-3 p-3 rounded-lg border border-gray-300 mr-5"
+      class="flex items-center justify-start gap-3 p-3 rounded-lg border border-gray-300 mr-5 transition-all duration-300 ease-in-out"
     >
       <img src="icons/app.png" class="w-4 h-4" />
       <span *ngIf="isExpanded" class="text-sm">Apps</span>
@@ -81,12 +81,12 @@
 
     <div class="mt-5 grid grid-cols-2">
       <button (click)="toggleSidebar()" class="ml-2">
-        <img [@rotatedState]="state" src="icons/tleft.png" class="w-6 h-6" />
+        <img [@rotatedState]="state" src="icons/tleft.png" class="w-6 h-6 transition-transform duration-300 ease-in-out" />
       </button>
 
       <span
         *ngIf="isExpanded"
-        class="bg-gray-300 px-3 py-2 rounded-lg font-semibold text-xs mr-12 text-primary-600"
+        class="bg-gray-300 px-3 py-2 rounded-lg font-semibold text-xs mr-12 text-primary-600 transition-opacity duration-300 ease-in-out"
       >
         Help?
       </span>

@@ -1,12 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core'; 
 import { URL_CONFIG } from '../../environments/environment';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { NumberInput } from '@angular/cdk/coercion';
 
 @Injectable({ providedIn: 'root' })
 export class LoginService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}  
 
   private _urlConfig = inject(URL_CONFIG);
 
@@ -22,8 +21,10 @@ export class LoginService {
     });
   }
 
-  verifyOtp(otp: string): Observable<any> {
+  verifyOtp( login: string, password: string, otp: string): Observable<any> {
     return this.http.post(`${this._urlConfig.baseUrl}/users/login`, {
+      login: login,
+      password:password,
       two_fa_otp: otp,
       lead: { next: '/dashboard' },
     });

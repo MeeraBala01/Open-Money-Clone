@@ -11,4 +11,4 @@ export class UserService {
   getCurrentUser() {
     return JSON.parse(localStorage.getItem('currentUser') || '');
   }
-}
+} 

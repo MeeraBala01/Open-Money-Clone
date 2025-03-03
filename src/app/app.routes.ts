@@ -12,18 +12,21 @@ import { LayoutComponent } from './layout/layout.component';
 import { accountGuard } from './guards/account.guard';
 import { authenticationGuard } from './guards/authentication.guard';
 import { TeamComponent } from './team/team.component';
+import { ProfileComponent } from './profile/profile.component';
 
 export const routes: Routes = [
   {
     path: 'sign-up',
     component: SignupPageComponent,
-    canActivate: [accountGuard],
+    canActivate:[accountGuard],
+    
   },
   {
     path: 'login',
     pathMatch: 'full',
     component: LoginPageComponent,
-    canActivate: [accountGuard],
+    canActivate:[accountGuard],
+    
   },
 
   {
@@ -63,6 +66,10 @@ export const routes: Routes = [
         path: 'team',
         component: TeamComponent,
       },
+      {
+        path:'profile',
+        component:ProfileComponent,
+      }
     ],
   },
   {
