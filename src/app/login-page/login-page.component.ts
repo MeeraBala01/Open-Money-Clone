@@ -1,28 +1,25 @@
 import {
   Component,
   ChangeDetectionStrategy,
-  ViewChild,
-  ViewChildren,
-  QueryList,
-  ElementRef,
+  ChangeDetectorRef
 } from '@angular/core';
 import { BugButtonComponent } from '../bug-button/bug-button.component';
 import { RouterLink, Router } from '@angular/router';
 import {
-  FormControl,
   ReactiveFormsModule,
   Validators,
   FormGroup,
   FormBuilder,
   FormsModule,
-  FormArray,
 } from '@angular/forms';
-import { UserService } from '../user.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { LoginAlertComponent } from '../alerts/login-alert/login-alert.component';
 import { LoginService } from '../services/login.service';
-import { NgClass, NgFor, NgIf } from '@angular/common';
+import {  NgFor, NgIf } from '@angular/common';
+import { AuthService } from '../services/auth.service';
+import { UserDataService } from '../services/user-data.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login-page',
@@ -36,6 +33,7 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
     NgIf,
     NgFor,
     FormsModule,
+    MatIconModule
   ],
   templateUrl: './login-page.component.html',
   styleUrl: './login-page.component.css',
@@ -44,12 +42,15 @@ import { NgClass, NgFor, NgIf } from '@angular/common';
 export class LoginPageComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
+  userData :any;
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService,
     private router: Router,
-    private _login: LoginService
+    private _login: LoginService,
+    private cdr: ChangeDetectorRef,
+    private authService: AuthService,
+    private userDataService: UserDataService, 
   ) {
     this.loginForm = this.fb.group({
       username: ['', Validators.required],
@@ -62,16 +63,35 @@ export class LoginPageComponent {
 
   toggleContent() {
     this.isOriginal = !this.isOriginal;
-    this.errorMessage = '';
   }
   currentUser: any;
   onLogin() {
-    if (this.loginForm.valid) {
-      this._login.login(this.loginForm.value).subscribe((response) => {});
-      this.toggleContent();
-    } else {
-      this.errorMessage;
-    }
+   
+    if (this.loginForm.valid ) { 
+     
+      this._login.login(this.loginForm.value).subscribe((response) => {
+        if(response){     
+        this.authService.login(response.token); 
+        this.toggleContent();
+        this.cdr.detectChanges();  
+        console.log(this.authService);
+        } 
+        else {
+          this.errorMessage = 'Error. Please try again.';
+          this.cdr.detectChanges();  
+        }
+      },
+      (error) => {
+        this.errorMessage = ' Invalid credentials. Please try again.';
+        this.cdr.detectChanges();  
+      }
+      
+      );}
+  }
+
+  close(){
+    this.errorMessage='' ;
+   
   }
 
   otp: string[] = new Array(6).fill('');
@@ -101,53 +121,23 @@ export class LoginPageComponent {
   }
 
   submitOtp() {
-    console.log('clicked');
     const enteredOtp = this.otpArray.join('');
+    const { username, password } = this.loginForm.value;
 
-    this._login.verifyOtp(enteredOtp).subscribe((response) => {
+    this._login.verifyOtp(username,password,enteredOtp).subscribe((response) => {
       if (response.data.users_id) {
+        this.userDataService.setUserData(response);
         this.router.navigate(['/dashboard']);
       }
     });
   }
-  // this._login
-  //   .verifyOtp(
-  //     {
-  //       username: this.loginForm.value.username,
-  //       password: this.loginForm.value.password,
-  //     },
-  //     enteredOtp
-  //   )
-  //   .subscribe((response) => {
-  //     if (response.success) {
-  //       this.router.navigate(['']); // ✅ Redirect on successful OTP verification
-  //     }
-  //   });
+
+  isPasswordVisible: boolean = false;
+
+togglePasswordVisibility() {
+  this.isPasswordVisible = !this.isPasswordVisible;
 }
 
-//     if (currentUser) {
-//       this.userService.setCurrentUser(currentUser);
-//       this.router.navigate(['/dashboard']);
-//     } else {
-//       this.triggerAlert();
-//     }
-//   } else {
-//     this.triggerAlert1();
-//   }
-// } else {
-//   this.triggerAlert2();
-// }
+}
 
-// @ViewChild(LoginAlertComponent) customAlert!: LoginAlertComponent;
 
-// triggerAlert() {
-//   this.customAlert.showAlert('Incorrect Username or Password');
-// }
-
-// triggerAlert1() {
-//   this.customAlert.showAlert('User non-existing, Sign-Up');
-// }
-
-// triggerAlert2() {
-//   this.customAlert.showAlert('Please enter valid credentials');
-// }

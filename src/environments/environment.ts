@@ -6,4 +6,4 @@ interface urlConfigType {
   baseUrl: string;
 }
 
-export const urlConfig = { baseUrl: 'https://uat-onboarding-dev.bankopen.co' };
+export const urlConfig = { baseUrl: 'https://preprod-hypertest-api.bankopen.co' };

@@ -1,6 +1,15 @@
 <div>
   <app-login-alert></app-login-alert>
 </div>
+<div *ngIf="errorMessage"  class="border border-solid p-3 m-3 w-1/4 fixed -bottom-2 left-1/3 z-50 bg-default-900 text-white flex items-center justify-between ml-16"
+>
+<span class="flex gap-3">
+  {{ errorMessage }}  
+</span>
+
+<button class="text-lg font-bold text-white bg-red-600 rounded-full  px-2 border-2 border-white" (click)="close()" >X</button></div>
+
+
 
 <div class="grid h-screen grid-cols-2">
   <div>
@@ -62,7 +71,7 @@
           <mat-label>Password</mat-label>
           <input
             matInput
-            type="password"
+            [type]="isPasswordVisible ? 'text' : 'password'" 
             placeholder="Password "
             id="password"
             name="password"
@@ -70,10 +79,17 @@
             class="border w-full"
             (keyup.enter)="onLogin()"
           />
-          <mat-error aria-atomic="true" aria-live="polite" class="custom-error">
-            Your Password Required</mat-error
-          >
-        </mat-form-field>
+          <button
+          mat-icon-button
+          matSuffix
+          (click)="togglePasswordVisibility()"
+          type="button"
+          class="p-3"
+        >
+          <mat-icon>{{ isPasswordVisible ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+          </mat-form-field>
+       
 
         <button class="ml-80 text-primary-600">Forgot password?</button>
         <button
@@ -85,8 +101,7 @@
         >
           Continue
         </button>
-        <p *ngIf="errorMessage">{{ errorMessage }}</p>
-
+      
         <p class="text-sm text-gray-500">
           Protected by reCAPTCHA. Google
           <a

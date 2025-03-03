@@ -51,49 +51,72 @@
     </button>
   </header>
 
-  <div class="h-screen bg-white">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="firstName">
-        <th mat-header-cell *matHeaderCellDef>Name</th>
-        <td mat-cell *matCellDef="let element">{{ element.firstName }}</td>
-      </ng-container>
+  <!-- Team members -->
+  
+   
+<div class="h-screen bg-white">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef>Email</th>
-        <td mat-cell *matCellDef="let element">{{ element.email }}</td>
-      </ng-container>
+    <!-- First Name Column -->
+    <ng-container matColumnDef="firstName">
+      <th mat-header-cell *matHeaderCellDef >  Name </th>
+      <td mat-cell *matCellDef="let element" class="font-medium"> {{ element.firstName }} </td>
+    </ng-container>
+  
+    <!-- Employee ID Column -->
+    <ng-container matColumnDef="emp_code">
+      <th mat-header-cell *matHeaderCellDef> Employee ID </th>
+      <td mat-cell *matCellDef="let element"> {{ element.emp_code }} </td>
+    </ng-container>  
 
-      <ng-container matColumnDef="department">
-        <th mat-header-cell *matHeaderCellDef>Department</th>
-        <td mat-cell *matCellDef="let element">{{ element.department }}</td>
-      </ng-container>
+    <!-- Role Column -->
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef> Role </th>
+      <td mat-cell *matCellDef="let element"> {{ element.role }} </td>
+    </ng-container>
+  
+    <!-- Department Column -->
+    <ng-container matColumnDef="department">
+      <th mat-header-cell *matHeaderCellDef> Department </th>
+      <td mat-cell *matCellDef="let element"> {{ element.department }} </td>
+    </ng-container>
 
-      <ng-container matColumnDef="role">
-        <th mat-header-cell *matHeaderCellDef>Role</th>
-        <td mat-cell *matCellDef="let element">{{ element.role }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element">
-          <button mat-icon-button [matMenuTriggerFor]="menu">
-            <img src="icons/menu.png" class="w-5" />
+    <!-- Actions Column -->
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <img src="icons/menu.png" class="w-5" />
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="viewDetails(element)">
+            View Details
           </button>
-          <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="viewDetails(element)">
-              View Details
-            </button>
-            <button mat-menu-item (click)="editOpen(element)">Edit Info</button>
-          </mat-menu>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-    <mat-paginator [pageSize]="5" aria-label="Select page"></mat-paginator>
+          <button mat-menu-item (click)="editOpen(element)">Edit Info</button>
+          <button mat-menu-item (click)="delete(element)">
+            Delete
+          </button>
+        </mat-menu>
+        
+      </td>
+     
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+  </table>
+  <div *ngIf="errorMessage" class="p-4 font-semibold "> <span>{{errorMessage}}</span></div>
+  <div class="flex gap-3 p-3 mb-10 bg-white mt-5 ">
+    <div class="flex"><img src="icons/tleft.png" class="w-5 cursor-pointer hover:bg-slate-200 rounded-full" (click)="previousPage()">
+    <button class="cursor-pointer hover:bg-slate-200 rounded-full px-2" (click)="changePage(1)"  [ngClass]="{ 'text-primary-500 font-semibold': currentPage === 1 }">1</button>
+    <button class="cursor-pointer hover:bg-slate-200 rounded-full px-2" (click)="pageTwo()" (click)="changePage(2)"  [ngClass]="{ 'text-primary-500 font-semibold': currentPage === 2 }">2</button>
+    <button class="cursor-pointer hover:bg-slate-200 rounded-full px-2" (click)="pageThree()" (click)="changePage(3)"  [ngClass]="{ 'text-primary-500 font-semibold': currentPage === 3 }">3</button>
+   <img src="icons/tright.png" class="w-5 cursor-pointer hover:bg-slate-200 rounded-full" (click)="nextPage()"></div>
   </div>
+  <!-- <mat-paginator [pageSize]="12"></mat-paginator> -->
 </div>
+</div> 
 
 <!-- input form -->
 <div
@@ -204,7 +227,7 @@
 
 <div
   *ngIf="overlayVisible"
-  class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg transition-transform duration-300 ease-in-out z-70 font-semibold"
+  class="fixed top-0 right-0 w-1/3 h-full bg-white shadow-lg transition-transform duration-300 ease-in-out z-80 font-semibold"
 >
   <div class="p-4 space-y-10">
     <div class="flex flex-row justify-between">
@@ -227,6 +250,14 @@
             <td class="">: {{ selectedMember?.email }}</td>
           </tr>
           <tr>
+            <td class="p-2">Employee ID</td>
+            <td class="">: {{ selectedMember?.emp_code }}</td>
+          </tr>
+          <tr>
+            <td class="p-2"> Mobile Number</td>
+            <td class="">: {{ selectedMember?.mobile_number }}</td>
+          </tr>
+          <tr>
             <td class="p-2">Department</td>
             <td class="">: {{ selectedMember?.department }}</td>
           </tr>
@@ -234,6 +265,8 @@
             <td class="p-2">Role</td>
             <td class="">: {{ selectedMember?.role }}</td>
           </tr>
+         
+        
         </tbody>
       </table>
     </div>

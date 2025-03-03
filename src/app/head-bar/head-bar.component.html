@@ -35,19 +35,29 @@
         <img src="icons/setting.png" class="p-1 w-7" />
       </button>
       <mat-menu #settings="matMenu">
-        <button mat-menu-item routerLink="/team">
+
+        <button mat-menu-item routerLink="/profile" >
           <div class="flex justify-start gap-2 items-center">
-            <img src="icons/team.png" class="w-5 h-5" />
-            <span>Team</span>
+            <img src="icons/profile.png" class="w-5 h-5" />
+            <span> Profile</span>
           </div>
         </button>
 
-        <button mat-menu-item routerLink="/logout" (click)="clear()">
+        <button mat-menu-item routerLink="/team">  
+          <div class="flex justify-start gap-2 items-center">
+            <img src="icons/team.png" class="w-5 h-5" />
+            <span>Team</span>
+          </div>  
+        </button>
+
+
+        <button mat-menu-item routerLink="/logout" (click)="logout()">
           <div class="flex justify-start gap-2 items-center">
             <img src="icons/logout.png" class="w-5 h-5" />
             <span> Log Out</span>
           </div>
         </button>
+       
       </mat-menu>
     </section>
   </header>

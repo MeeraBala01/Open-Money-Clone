@@ -1,0 +1,75 @@
+<div
+  [class]="
+    overlayTeam
+      ? 'bg-black opacity-40 pointer-events-none'
+      : ''
+  "
+>
+
+<app-head-bar label="Profile Details"></app-head-bar>
+<div class="grid grid-cols-2">
+    <section class=" border-r-2 bg-white h-screen ">
+        <div class="p-4" >
+            <h1 class="font-bold text-2xl">Profile Details</h1>
+            <h2 class="mt-7 font-semibold text-lg">Personal Details</h2>
+        </div>
+        <div class="p-4 flex justify-start gap-4">
+            <img src="icons/person.png" class="rounded-full p-4 border-2 w-24">
+            <div class="flex flex-col text-xs"> <span class="font-semibold">{{userData.data.first_name}} {{userData.data.last_name}}</span>
+            <span>{{userData.data.team_member_details.data.mobile_number}} | {{userData.data.team_member_details.data.email_id}}</span>
+        <button class="text-primary-600 border border-primary-600 rounded-md mt-4 p-2 hover:bg-default-300" (click)="openFormDialog()">Change Password</button></div>
+            
+        </div>
+    </section>
+    <section class=" bg-white"> 
+        <h1 class="font-semibold text-lg p-4">Notifications</h1>
+        <div class="p-4 flex flex-col space-y-4">
+             <div class="flex justify-between mt-4"><p class="font-medium text-md">Email</p><mat-slide-toggle></mat-slide-toggle>
+            </div>
+            <span>{{userData.data.team_member_details.data.email_id}}</span>
+            <a class="text-primary-700 flex items-center cursor-pointer"><span class="text-xl mr-1">+</span> Add new Email-Id</a>
+        </div>
+        <div class="p-4  space-y-4 flex flex-col">
+            <div class="flex justify-between mt-4"><p class="font-medium text-md">SMS</p><mat-slide-toggle></mat-slide-toggle>
+           </div>
+           <span>{{userData.data.team_member_details.data.mobile_number}}</span>
+           <a class="text-primary-700 flex items-center cursor-pointer"><span class="text-xl mr-1">+</span> Add new Mobile Number</a>
+       </div>
+    </section>    
+</div>
+
+</div>
+
+
+<!-- passsword change -->
+
+<div  *ngIf="overlayTeam"
+class="fixed top-0 right-0 h-full shadow-lg transition-transform duration-300 ease-in-out z-40 bg-white w-1/3">
+
+    <div class="flex justify-between p-6 border-b"><p class="text-lg">Update Password</p><button (click)="closeFormDialog()" class="text-xl">X</button></div>
+
+    <form class="flex flex-col space-y-0">
+        <mat-form-field appearance="outline" class=" w-full">
+            <input type="text"
+            placeholder="Current Password"
+            class="border w-full p-2 rounded-lg">
+           
+        </mat-form-field>
+        <mat-form-field appearance="outline" class=" w-full mt-0">
+            <input type="text"
+            placeholder="New Password"
+            class="border w-full p-2 rounded-lg">
+        </mat-form-field>
+        <mat-form-field appearance="outline" class=" w-full">
+            <input type="text"
+            placeholder="Re-enter New Password"
+            class="border w-full p-2 rounded-lg">
+        </mat-form-field>
+        <button
+        class="text-white p-3 ml-4 mr-4 font-semibold bg-primary-600 rounded-lg flex justify-center" >
+        Update Password
+      </button>
+    
+    </form>
+ 
+</div>
