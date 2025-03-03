@@ -43,6 +43,11 @@ export class LoginPageComponent {
   loginForm: FormGroup;
   errorMessage: string = '';
   userData :any;
+  isOriginal: boolean = true;
+  isPasswordVisible: boolean = false;
+  currentUser: any;
+  otp: string[] = new Array(6).fill('');
+  otpArray = Array(6).fill('');
 
   constructor(
     private fb: FormBuilder,
@@ -59,12 +64,12 @@ export class LoginPageComponent {
 
     console.log(this.otp[0]);
   }
-  isOriginal: boolean = true;
+  
 
   toggleContent() {
     this.isOriginal = !this.isOriginal;
   }
-  currentUser: any;
+  
   onLogin() {
    
     if (this.loginForm.valid ) { 
@@ -93,9 +98,6 @@ export class LoginPageComponent {
     this.errorMessage='' ;
    
   }
-
-  otp: string[] = new Array(6).fill('');
-  otpArray = Array(6).fill('');
 
   moveFocus(event: any, index: number) {
     const input = event.target;
@@ -132,7 +134,6 @@ export class LoginPageComponent {
     });
   }
 
-  isPasswordVisible: boolean = false;
 
 togglePasswordVisibility() {
   this.isPasswordVisible = !this.isPasswordVisible;

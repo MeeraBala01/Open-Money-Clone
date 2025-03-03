@@ -62,23 +62,14 @@ export interface teamMembers {
   styleUrl: './team.component.css',
 })
 export class TeamComponent {
+  dataSource = new MatTableDataSource<teamMembers>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value
-      .trim()
-      .toLowerCase();
-    this.dataSource.filter = filterValue;
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
- // constructor(private router: Router, private dialog: MatDialog) {}
- // label = input('');
    teamData : any;
    currentUser: any;
    teamRoles: any;
+   userData:any;
  
    constructor(
      private router: Router,
@@ -130,14 +121,41 @@ export class TeamComponent {
     
   };
 
+  position: string[] = [
+    'All',
+    'Admin',
+    'Bill Approver',
+    'Employee',
+    'Manager',
+    'Owner',
+    'Tax Consultant',
+  ];
+
+
+  displayedColumns: string[] = [
+    'firstName',
+    'emp_code',
+    'role',
+    'department',
+    'actions'
+    ];
+
  errorMessage: string ='';
+ selectedRole: string = 'All';
+ overlayVisible = false;
+ selectedMember: teamMembers | null = null;
+ overlayTeam = false;
+ editOverlay = false;
+
+ngAfterViewInit() {
+  this.dataSource.paginator = this.paginator;
+}
 
   ngOnInit(): void {
     this.loadTeamData();
   }
 
 
-  userData:any;
   loadTeamData(): void {
     this.teamService.teamData().subscribe(
       (response: any) => {
@@ -211,8 +229,8 @@ this.teamService.teamData2().subscribe(
     )
       }
 
+      
       currentPage = 1;
-
       changePage(pageNumber: number): void {
         this.currentPage = pageNumber;
         if (pageNumber === 1) {
@@ -237,8 +255,7 @@ this.teamService.teamData2().subscribe(
       }
       
 
-  dataSource = new MatTableDataSource<teamMembers>();
-
+ 
   saveTeam(teamFormData: any) {
     if (this.teamForm.valid) {
       const newUser = this.teamForm.value;
@@ -256,18 +273,6 @@ this.teamService.teamData2().subscribe(
     }
   }
 
-  displayedColumns: string[] = [
-    'firstName',
-  'emp_code',
-  'role',
-  'department',
-  'actions'
-  ];
-
-  overlayVisible = false;
-  selectedMember: teamMembers | null = null;
-  overlayTeam = false;
-  editOverlay = false;
 
   editOpen(member: teamMembers) {
     this.editOverlay = true;
@@ -304,15 +309,6 @@ this.teamService.teamData2().subscribe(
     this.selectedMember = null;
   }
 
-  position: string[] = [
-    'All',
-    'Admin',
-    'Bill Approver',
-    'Employee',
-    'Manager',
-    'Owner',
-    'Tax Consultant',
-  ];
 
   updateForm() {
     if (this.teamForm.valid && this.selectedMember) {
@@ -335,22 +331,39 @@ this.teamService.teamData2().subscribe(
     }
   }
 
-  // role filtering
-
-  selectedRole: string = 'All';
-  originalTeamData: teamMembers[] = [];
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value
+      .trim()
+      .toLowerCase();
+  
+    this.dataSource.filterPredicate = (data: teamMembers, filter: string) => {
+      return (
+        data.firstName.toLowerCase().includes(filter) ||
+        data.lastName.toLowerCase().includes(filter) 
+      );
+    };
+  
+    this.dataSource.filter = filterValue;
+  }
+  
 
   applyRoleFilter(role: string): void {
     this.selectedRole = role;
-
+  
     if (role === 'All') {
-      this.dataSource.data = [...this.originalTeamData];
+      this.dataSource.data = [...this.teamData]; // Reset to original data
     } else {
-      this.dataSource.data = this.originalTeamData.filter(
-        (member) => member.role === role
+      this.dataSource.data = this.teamData.filter(
+        (member:any) => member.role.toLowerCase() === role.toLowerCase()
       );
     }
+  
+    // Reapply text filter after role selection
+    if (this.dataSource.filter) {
+      this.dataSource.filter = this.dataSource.filter;
+    }
   }
+
 
 //deleting a team member
   delete(member: teamMembers){
@@ -367,3 +380,6 @@ this.teamService.teamData2().subscribe(
   
   }
 }
+
+
+

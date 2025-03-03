@@ -1,3 +1,4 @@
+
 import { Component } from '@angular/core';
 import { NgClass, NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -26,6 +27,8 @@ import {
 export class SideBarComponent {
   isExpanded = true;
   state: string = 'default';
+
+  
 
   toggleSidebar() {
     this.isExpanded = !this.isExpanded;

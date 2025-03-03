@@ -43,8 +43,6 @@ export class SignupPageComponent {
     referral: new FormControl(''),
   });
 
-  constructor(private router: Router, private userService: UserService) {}
-
   userRegisterObj: any = {
     name: '',
     email: '',
@@ -52,6 +50,12 @@ export class SignupPageComponent {
     password: '',
     referral: '',
   };
+
+
+  constructor(private router: Router, private userService: UserService) {}
+
+  @ViewChild(SignupAlertComponent) customAlert!: SignupAlertComponent; 
+
 
   onRegister() {
     if (this.userForm.valid) {
@@ -77,8 +81,6 @@ export class SignupPageComponent {
       this.router.navigate([' ']);
     }
   }
-
-  @ViewChild(SignupAlertComponent) customAlert!: SignupAlertComponent;
 
   triggerAlert() {
     this.customAlert.showAlert('Fill all required fields');

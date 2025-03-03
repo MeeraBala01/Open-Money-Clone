@@ -56,9 +56,5 @@ teamDetails(){
        console.log(response);
         this.teamRoles = response;
       });
-
- 
 }
-
-
 }
